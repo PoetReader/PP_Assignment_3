@@ -88,28 +88,11 @@ __global__ void kernelFindMax(const int *array, size_t length, int *max)
         val = warpFindMax(val); // second reduction
 
         if (threadIdx.x == 0){
-            *max = val; //write result
+            atomicMax(max, val); //write result of block if greater than max 
         }
     }
 }
 
-/**
- * int main(int argc, char∗ argv[])
- * {
- * int blk_ct;
- * //Number of thread blocks
- * int th_per_blk;
- * //Number of threads in each block
- * blk_ct = strtol(argv[1], NULL, 10);
- * //Get number of blocks from command line
- * th_per_blk = strtol(argv[2], NULL, 10);
- * //Get number of threads per block from command line
- * Hello<<<blk_ct, th_per_blk>>>();
- * Start blk_ct∗th_per_blk threads on GPU,
- * cudaDeviceSynchronize(); // Wait for GPU to finish
- * return 0;
-}
- */
 
 int main(int argc, char const *argv[])
 {
@@ -142,8 +125,8 @@ int main(int argc, char const *argv[])
     cudaMemcpy(device_max, &init, sizeof(int), cudaMemcpyHostToDevice);
     /*--------------------Parallel---------------------*/
 
-    /* -------- Kernel Start: 1 Block, 32 Threads -------- */
-    kernelFindMax<<<1, 256>>>(device_arr, length_1, device_max);
+    /* -------- Kernel Start: 1024 Blocks, 256 Threads -------- */
+    kernelFindMax<<<1024, 256>>>(device_arr, length_1, device_max);
     cudaDeviceSynchronize();
 
     /* -------- Copy res back to host -------- */
