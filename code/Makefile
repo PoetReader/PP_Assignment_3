@@ -1,8 +1,5 @@
 main: main.cu
-	nvcc -arch=sm_50 -o $@ $^ 
+	nvcc -arch=sm_86 -o $@ $^ 
 
-serial: serial.c
-	gcc -o $@ $^ -lm
-
-run: serial
-	./serial
+run_main: main
+	./main
