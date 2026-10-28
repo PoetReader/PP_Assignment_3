@@ -1,0 +1,329 @@
+Size is 134217728
+SMs: 30
+_____________________________________________________________________
+_____________________________________________________________________
+Serial max: 2147483639
+_____________________________________________________________________
+_____________________________________________________________________
+Parallel max: 2147483639
+They are the same
+-------------------------------------------------------------------
+1. Run 
+Total Time elapsed: 
+Serial: 250.721752 ms ---------------------- Parallel: 76.723999 ms
+PARALLEL TIMES --> Data copy from host to device: 74.440704 ms
+PARALLEL TIMES --> Data copy from device to host: 0.019168 ms
+PARALLEL TIMES --> Kernel: 2.264128 ms
+Parallel VS Serial: 30.601254 %
+Speed Up: 3.267840x
+Efficiency: 10.892800 %
+-------------------------------------------------------------------
+2. Run 
+Total Time elapsed: 
+Serial: 250.707436 ms ---------------------- Parallel: 76.556953 ms
+PARALLEL TIMES --> Data copy from host to device: 74.438461 ms
+PARALLEL TIMES --> Data copy from device to host: 0.011424 ms
+PARALLEL TIMES --> Kernel: 2.107072 ms
+Parallel VS Serial: 30.536371 %
+Speed Up: 3.274783x
+Efficiency: 10.915944 %
+-------------------------------------------------------------------
+3. Run 
+Total Time elapsed: 
+Serial: 250.770291 ms ---------------------- Parallel: 76.430946 ms
+PARALLEL TIMES --> Data copy from host to device: 74.305283 ms
+PARALLEL TIMES --> Data copy from device to host: 0.016704 ms
+PARALLEL TIMES --> Kernel: 2.108960 ms
+Parallel VS Serial: 30.478469 %
+Speed Up: 3.281005x
+Efficiency: 10.936682 %
+-------------------------------------------------------------------
+4. Run 
+Total Time elapsed: 
+Serial: 250.859895 ms ---------------------- Parallel: 76.432289 ms
+PARALLEL TIMES --> Data copy from host to device: 74.315201 ms
+PARALLEL TIMES --> Data copy from device to host: 0.013888 ms
+PARALLEL TIMES --> Kernel: 2.103200 ms
+Parallel VS Serial: 30.468118 %
+Speed Up: 3.282119x
+Efficiency: 10.940398 %
+-------------------------------------------------------------------
+5. Run 
+Total Time elapsed: 
+Serial: 250.873374 ms ---------------------- Parallel: 77.255554 ms
+PARALLEL TIMES --> Data copy from host to device: 75.127968 ms
+PARALLEL TIMES --> Data copy from device to host: 0.018144 ms
+PARALLEL TIMES --> Kernel: 2.109440 ms
+Parallel VS Serial: 30.794641 %
+Speed Up: 3.247318x
+Efficiency: 10.824394 %
+-------------------------------------------------------------------
+6. Run 
+Total Time elapsed: 
+Serial: 250.775180 ms ---------------------- Parallel: 76.351295 ms
+PARALLEL TIMES --> Data copy from host to device: 74.235519 ms
+PARALLEL TIMES --> Data copy from device to host: 0.010688 ms
+PARALLEL TIMES --> Kernel: 2.105088 ms
+Parallel VS Serial: 30.446113 %
+Speed Up: 3.284491x
+Efficiency: 10.948305 %
+-------------------------------------------------------------------
+7. Run 
+Total Time elapsed: 
+Serial: 250.805490 ms ---------------------- Parallel: 76.373856 ms
+PARALLEL TIMES --> Data copy from host to device: 74.250275 ms
+PARALLEL TIMES --> Data copy from device to host: 0.017280 ms
+PARALLEL TIMES --> Kernel: 2.106304 ms
+Parallel VS Serial: 30.451429 %
+Speed Up: 3.283918x
+Efficiency: 10.946394 %
+-------------------------------------------------------------------
+8. Run 
+Total Time elapsed: 
+Serial: 250.858219 ms ---------------------- Parallel: 77.274719 ms
+PARALLEL TIMES --> Data copy from host to device: 75.171715 ms
+PARALLEL TIMES --> Data copy from device to host: 0.010432 ms
+PARALLEL TIMES --> Kernel: 2.092576 ms
+Parallel VS Serial: 30.804141 %
+Speed Up: 3.246317x
+Efficiency: 10.821056 %
+-------------------------------------------------------------------
+9. Run 
+Total Time elapsed: 
+Serial: 250.680967 ms ---------------------- Parallel: 76.507744 ms
+PARALLEL TIMES --> Data copy from host to device: 74.410561 ms
+PARALLEL TIMES --> Data copy from device to host: 0.009696 ms
+PARALLEL TIMES --> Kernel: 2.087488 ms
+Parallel VS Serial: 30.519965 %
+Speed Up: 3.276544x
+Efficiency: 10.921812 %
+-------------------------------------------------------------------
+10. Run 
+Total Time elapsed: 
+Serial: 250.835870 ms ---------------------- Parallel: 76.415260 ms
+PARALLEL TIMES --> Data copy from host to device: 74.297661 ms
+PARALLEL TIMES --> Data copy from device to host: 0.012384 ms
+PARALLEL TIMES --> Kernel: 2.105216 ms
+Parallel VS Serial: 30.464248 %
+Speed Up: 3.282536x
+Efficiency: 10.941788 %
+-------------------------------------------------------------------
+11. Run 
+Total Time elapsed: 
+Serial: 250.835242 ms ---------------------- Parallel: 76.382874 ms
+PARALLEL TIMES --> Data copy from host to device: 74.261917 ms
+PARALLEL TIMES --> Data copy from device to host: 0.016352 ms
+PARALLEL TIMES --> Kernel: 2.104608 ms
+Parallel VS Serial: 30.451412 %
+Speed Up: 3.283920x
+Efficiency: 10.946400 %
+-------------------------------------------------------------------
+12. Run 
+Total Time elapsed: 
+Serial: 250.769173 ms ---------------------- Parallel: 76.356773 ms
+PARALLEL TIMES --> Data copy from host to device: 74.241539 ms
+PARALLEL TIMES --> Data copy from device to host: 0.009888 ms
+PARALLEL TIMES --> Kernel: 2.105344 ms
+Parallel VS Serial: 30.449027 %
+Speed Up: 3.284177x
+Efficiency: 10.947257 %
+-------------------------------------------------------------------
+13. Run 
+Total Time elapsed: 
+Serial: 250.826791 ms ---------------------- Parallel: 76.338562 ms
+PARALLEL TIMES --> Data copy from host to device: 74.217857 ms
+PARALLEL TIMES --> Data copy from device to host: 0.017440 ms
+PARALLEL TIMES --> Kernel: 2.103264 ms
+Parallel VS Serial: 30.434772 %
+Speed Up: 3.285715x
+Efficiency: 10.952385 %
+-------------------------------------------------------------------
+14. Run 
+Total Time elapsed: 
+Serial: 250.818131 ms ---------------------- Parallel: 76.386467 ms
+PARALLEL TIMES --> Data copy from host to device: 74.278435 ms
+PARALLEL TIMES --> Data copy from device to host: 0.010880 ms
+PARALLEL TIMES --> Kernel: 2.097152 ms
+Parallel VS Serial: 30.454922 %
+Speed Up: 3.283541x
+Efficiency: 10.945138 %
+-------------------------------------------------------------------
+15. Run 
+Total Time elapsed: 
+Serial: 250.918210 ms ---------------------- Parallel: 76.355293 ms
+PARALLEL TIMES --> Data copy from host to device: 74.245087 ms
+PARALLEL TIMES --> Data copy from device to host: 0.011008 ms
+PARALLEL TIMES --> Kernel: 2.099200 ms
+Parallel VS Serial: 30.430351 %
+Speed Up: 3.286193x
+Efficiency: 10.953976 %
+-------------------------------------------------------------------
+16. Run 
+Total Time elapsed: 
+Serial: 250.848022 ms ---------------------- Parallel: 76.358047 ms
+PARALLEL TIMES --> Data copy from host to device: 74.241570 ms
+PARALLEL TIMES --> Data copy from device to host: 0.013056 ms
+PARALLEL TIMES --> Kernel: 2.103424 ms
+Parallel VS Serial: 30.439964 %
+Speed Up: 3.285155x
+Efficiency: 10.950517 %
+-------------------------------------------------------------------
+17. Run 
+Total Time elapsed: 
+Serial: 250.861711 ms ---------------------- Parallel: 76.378471 ms
+PARALLEL TIMES --> Data copy from host to device: 74.255585 ms
+PARALLEL TIMES --> Data copy from device to host: 0.016064 ms
+PARALLEL TIMES --> Kernel: 2.106816 ms
+Parallel VS Serial: 30.446444 %
+Speed Up: 3.284456x
+Efficiency: 10.948186 %
+-------------------------------------------------------------------
+18. Run 
+Total Time elapsed: 
+Serial: 250.903475 ms ---------------------- Parallel: 76.391068 ms
+PARALLEL TIMES --> Data copy from host to device: 74.283836 ms
+PARALLEL TIMES --> Data copy from device to host: 0.010080 ms
+PARALLEL TIMES --> Kernel: 2.097152 ms
+Parallel VS Serial: 30.446397 %
+Speed Up: 3.284461x
+Efficiency: 10.948203 %
+-------------------------------------------------------------------
+19. Run 
+Total Time elapsed: 
+Serial: 250.931550 ms ---------------------- Parallel: 76.357407 ms
+PARALLEL TIMES --> Data copy from host to device: 74.235939 ms
+PARALLEL TIMES --> Data copy from device to host: 0.014368 ms
+PARALLEL TIMES --> Kernel: 2.107104 ms
+Parallel VS Serial: 30.429576 %
+Speed Up: 3.286276x
+Efficiency: 10.954255 %
+-------------------------------------------------------------------
+20. Run 
+Total Time elapsed: 
+Serial: 250.880358 ms ---------------------- Parallel: 76.356361 ms
+PARALLEL TIMES --> Data copy from host to device: 74.244354 ms
+PARALLEL TIMES --> Data copy from device to host: 0.015072 ms
+PARALLEL TIMES --> Kernel: 2.096928 ms
+Parallel VS Serial: 30.435368 %
+Speed Up: 3.285651x
+Efficiency: 10.952170 %
+-------------------------------------------------------------------
+21. Run 
+Total Time elapsed: 
+Serial: 250.924427 ms ---------------------- Parallel: 76.366943 ms
+PARALLEL TIMES --> Data copy from host to device: 74.251587 ms
+PARALLEL TIMES --> Data copy from device to host: 0.016160 ms
+PARALLEL TIMES --> Kernel: 2.099200 ms
+Parallel VS Serial: 30.434240 %
+Speed Up: 3.285773x
+Efficiency: 10.952576 %
+-------------------------------------------------------------------
+22. Run 
+Total Time elapsed: 
+Serial: 250.853609 ms ---------------------- Parallel: 76.332542 ms
+PARALLEL TIMES --> Data copy from host to device: 74.213699 ms
+PARALLEL TIMES --> Data copy from device to host: 0.011232 ms
+PARALLEL TIMES --> Kernel: 2.107616 ms
+Parallel VS Serial: 30.429119 %
+Speed Up: 3.286326x
+Efficiency: 10.954420 %
+-------------------------------------------------------------------
+23. Run 
+Total Time elapsed: 
+Serial: 250.893977 ms ---------------------- Parallel: 76.318108 ms
+PARALLEL TIMES --> Data copy from host to device: 74.199455 ms
+PARALLEL TIMES --> Data copy from device to host: 0.013408 ms
+PARALLEL TIMES --> Kernel: 2.105248 ms
+Parallel VS Serial: 30.418469 %
+Speed Up: 3.287476x
+Efficiency: 10.958255 %
+-------------------------------------------------------------------
+24. Run 
+Total Time elapsed: 
+Serial: 250.878053 ms ---------------------- Parallel: 76.338905 ms
+PARALLEL TIMES --> Data copy from host to device: 74.216797 ms
+PARALLEL TIMES --> Data copy from device to host: 0.011264 ms
+PARALLEL TIMES --> Kernel: 2.110848 ms
+Parallel VS Serial: 30.428690 %
+Speed Up: 3.286372x
+Efficiency: 10.954574 %
+-------------------------------------------------------------------
+25. Run 
+Total Time elapsed: 
+Serial: 250.877634 ms ---------------------- Parallel: 76.370659 ms
+PARALLEL TIMES --> Data copy from host to device: 74.260994 ms
+PARALLEL TIMES --> Data copy from device to host: 0.009728 ms
+PARALLEL TIMES --> Kernel: 2.099936 ms
+Parallel VS Serial: 30.441398 %
+Speed Up: 3.285000x
+Efficiency: 10.950001 %
+-------------------------------------------------------------------
+26. Run 
+Total Time elapsed: 
+Serial: 250.962489 ms ---------------------- Parallel: 76.365662 ms
+PARALLEL TIMES --> Data copy from host to device: 74.244576 ms
+PARALLEL TIMES --> Data copy from device to host: 0.014016 ms
+PARALLEL TIMES --> Kernel: 2.107072 ms
+Parallel VS Serial: 30.429114 %
+Speed Up: 3.286326x
+Efficiency: 10.954421 %
+-------------------------------------------------------------------
+27. Run 
+Total Time elapsed: 
+Serial: 250.899704 ms ---------------------- Parallel: 76.324188 ms
+PARALLEL TIMES --> Data copy from host to device: 74.209724 ms
+PARALLEL TIMES --> Data copy from device to host: 0.012992 ms
+PARALLEL TIMES --> Kernel: 2.101472 ms
+Parallel VS Serial: 30.420199 %
+Speed Up: 3.287290x
+Efficiency: 10.957632 %
+-------------------------------------------------------------------
+28. Run 
+Total Time elapsed: 
+Serial: 250.796411 ms ---------------------- Parallel: 76.392387 ms
+PARALLEL TIMES --> Data copy from host to device: 74.276802 ms
+PARALLEL TIMES --> Data copy from device to host: 0.010368 ms
+PARALLEL TIMES --> Kernel: 2.105216 ms
+Parallel VS Serial: 30.459920 %
+Speed Up: 3.283003x
+Efficiency: 10.943342 %
+-------------------------------------------------------------------
+29. Run 
+Total Time elapsed: 
+Serial: 250.918490 ms ---------------------- Parallel: 76.402939 ms
+PARALLEL TIMES --> Data copy from host to device: 74.285599 ms
+PARALLEL TIMES --> Data copy from device to host: 0.015680 ms
+PARALLEL TIMES --> Kernel: 2.101664 ms
+Parallel VS Serial: 30.449306 %
+Speed Up: 3.284147x
+Efficiency: 10.947157 %
+-------------------------------------------------------------------
+30. Run 
+Total Time elapsed: 
+Serial: 250.888319 ms ---------------------- Parallel: 76.356926 ms
+PARALLEL TIMES --> Data copy from host to device: 74.237534 ms
+PARALLEL TIMES --> Data copy from device to host: 0.016352 ms
+PARALLEL TIMES --> Kernel: 2.103040 ms
+Parallel VS Serial: 30.434628 %
+Speed Up: 3.285731x
+Efficiency: 10.952437 %
+_____________________________________________________________________
+_____________________________________________________________________
+MINIMUM TIME: 
+Serial: 250.680967 ms ---------------------- Parallel: 76.318108 ms
+PARALLEL TIMES --> Data copy from host to device: 74.199455 ms
+PARALLEL TIMES --> Data copy from device to host: 0.009696 ms
+PARALLEL TIMES --> Kernel: 2.087488 ms
+Parallel VS Serial: 30.444317 %
+Speed Up: 3.284685x
+Efficiency: 10.948951 %
+_____________________________________________________________________
+_____________________________________________________________________
+MEAN TIME: 
+Serial: 250.845808 ms ---------------------- Parallel: 76.451773 ms
+PARALLEL TIMES --> Data copy from host to device: 74.329874 ms
+PARALLEL TIMES --> Data copy from device to host: 0.013507 ms
+PARALLEL TIMES --> Kernel: 2.108393 ms
+Parallel VS Serial: 30.477597 %
+Speed Up: 3.281099x
+Efficiency: 10.936995 %

@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 #include <cuda.h> //Header file for CUDA
 #include <time.h>
+#include <cstdio>
+#include <cuda_runtime.h>
+#include <unistd.h>
 
 /**
  * @brief Helper function speedup
- * parallel time
+ * @param parallel time
  */
 double speedUp(double serial, double parallel)
 {
@@ -14,9 +18,19 @@ double speedUp(double serial, double parallel)
 }
 
 /**
+ * @brief Helper function to get efficiency
+ * @param speedup
+ * @param units
+ */
+double efficiency(double speedup, int units)
+{
+    return speedup / units;
+}
+
+/**
  * @brief Helper function to find percent of time the parallel version spents compared to serial
- * serial time
- * parallel time
+ * @param serial_time
+ * @param parallel_time
  */
 double parallel_VS_serial(double serial, double parallel)
 {
@@ -25,8 +39,8 @@ double parallel_VS_serial(double serial, double parallel)
 
 /**
  * @brief Helper function to find min elapsed time
- * arr
- * testRuns
+ * @param arr
+ * @param testRuns
  */
 double findMin(double arr[], int testRuns)
 {
@@ -45,8 +59,8 @@ double findMin(double arr[], int testRuns)
 
 /**
  * @brief Helper to find mean of time arrays
- * arr
- * testRuns
+ * @param arr
+ * @param testRuns
  */
 double findMean(double arr[], int testRuns)
 {
@@ -154,11 +168,65 @@ __global__ void kernelFindMax(const int *array, size_t length, int *max)
 
 int main(int argc, char const *argv[])
 {
-    // test array
-    int *arr_32 = (int *)malloc(32 * sizeof(int));
 
     // Setup of the array to test on
-    size_t length_1 = 402653184;
+    size_t length_1;
+
+    size_t small = 134217728;
+    size_t middle = 268435456;
+    size_t large = 402653184;
+
+    if (argc < 2)
+    {
+        fprintf(stderr, "Usage: ./main {SMALL|MIDDLE|LARGE}\n");
+        fprintf(stderr, "  SMALL  = %zu (0.5 GiB)\n", small);
+        fprintf(stderr, "  MIDDLE = %zu (1.0 GiB)\n", middle);
+        fprintf(stderr, "  LARGE  = %zu (1.5 GiB)\n", large);
+        return EXIT_FAILURE;
+    }
+
+    char hostname[256];
+    if (gethostname(hostname, sizeof(hostname)) != 0)
+    {
+        fprintf(stderr, "gethostname failed\n");
+        return EXIT_FAILURE;
+    }
+
+    char *dot = strchr(hostname, '.');
+    if (dot)
+        *dot = '\0'; // "c6-4.ifi.uit.no" -> "c6-4"
+
+    char pathname[512];
+
+    if (strcmp(argv[1], "SMALL") == 0)
+    {
+        length_1 = small;
+        snprintf(pathname, sizeof(pathname), "results_%s_SMALL.txt", hostname);
+    }
+    else if (strcmp(argv[1], "MIDDLE") == 0)
+    {
+        length_1 = middle;
+        snprintf(pathname, sizeof(pathname), "results_%s_MIDDLE.txt", hostname);
+    }
+    else if (strcmp(argv[1], "LARGE") == 0)
+    {
+        length_1 = large;
+        snprintf(pathname, sizeof(pathname), "results_%s_LARGE.txt", hostname);
+    }
+    else
+    {
+        fprintf(stderr, "Unknown size: '%s'\n", argv[1]);
+        return EXIT_FAILURE;
+    }
+
+    FILE *log = freopen(pathname, "w", stdout);
+    if (log == NULL)
+    {
+        fprintf(stderr, "Cannot open %s\n", pathname);
+        return EXIT_FAILURE;
+    }
+
+    printf("Size is %zu\n", length_1);
 
     int *arr_1 = (int *)malloc(length_1 * sizeof(int));
 
@@ -168,11 +236,6 @@ int main(int argc, char const *argv[])
         arr_1[i] = rand();
     }
 
-    for (int i = 0; i < 32; i++)
-    {
-        arr_32[i] = rand();
-    }
-
     int init = INT_MIN;
 
     int testRuns = 30;
@@ -180,13 +243,19 @@ int main(int argc, char const *argv[])
     double serial_times[testRuns];
     int max;
 
-    // Time arrays
+    // Measaurement arrays
     double parallel_times[testRuns];
     double parallel_host2device_times[testRuns];
     double parallel_device2host_times[testRuns];
     double parallel_kernel[testRuns];
     double pVSs[testRuns];
     double speed_Up[testRuns];
+    double eff[testRuns];
+
+    cudaDeviceProp prop;
+    cudaGetDeviceProperties(&prop, 0);
+    int p = prop.multiProcessorCount;
+    printf("SMs: %d\n", p);
 
     int *device_arr;
     int *device_max;
@@ -227,6 +296,12 @@ int main(int argc, char const *argv[])
 
         cudaEventRecord(kernel_start); //---------------Timer Start-----------------
         kernelFindMax<<<1024, 256>>>(device_arr, length_1, device_max);
+        cudaError_t err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            fprintf(stderr, "Kernel launch failed: %s\n", cudaGetErrorString(err));
+            // aufräumen, return EXIT_FAILURE
+        }
         cudaEventRecord(kernel_end); //---------------Timer End-----------------
 
         cudaEventRecord(device2host_start); //---------------Timer Start-----------------
@@ -237,7 +312,7 @@ int main(int argc, char const *argv[])
 
         if (gpu_max != max)
         {
-            fprintf(stderr, "something went wrong at run %d: gpu=%d serial=%d\n", current, gpu_max, max);
+            fprintf(stderr, "something went wrong at run %d: parallel=%d serial=%d\n", current, gpu_max, max);
 
             cudaEventDestroy(host2device_start);
             cudaEventDestroy(host2device_end);
@@ -249,7 +324,6 @@ int main(int argc, char const *argv[])
             cudaFree(device_max);
             cudaFree(device_arr);
             free(arr_1);
-            free(arr_32);
             return EXIT_FAILURE;
         }
 
@@ -265,6 +339,7 @@ int main(int argc, char const *argv[])
         parallel_kernel[current] = time_kernel;
         pVSs[current] = parallel_VS_serial(serial_time, time);
         speed_Up[current] = speedUp(serial_time, time);
+        eff[current] = efficiency(speed_Up[current], p) * 100;
     }
 
     printf("_____________________________________________________________________\n_____________________________________________________________________\nSerial max: %d\n", max);
@@ -274,7 +349,7 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < testRuns; i++)
     {
-        printf("-------------------------------------------------------------------\n%d. Run \nTotal Time elapsed: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\n", i, serial_times[i], parallel_times[i], parallel_host2device_times[i], parallel_device2host_times[i], parallel_kernel[i], pVSs[i], speed_Up[i]);
+        printf("-------------------------------------------------------------------\n%d. Run \nTotal Time elapsed: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\nEfficiency: %f %%\n", i + 1, serial_times[i], parallel_times[i], parallel_host2device_times[i], parallel_device2host_times[i], parallel_kernel[i], pVSs[i], speed_Up[i], eff[i]);
     }
 
     // print minimum
@@ -285,8 +360,9 @@ int main(int argc, char const *argv[])
     double min_kernel = findMin(parallel_kernel, testRuns);
     double min_pVSs = parallel_VS_serial(min_elapsed_time_serial, min_elapsed_time_parallel);
     double min_speedUp = speedUp(min_elapsed_time_serial, min_elapsed_time_parallel);
+    double min_efficiency = efficiency(min_speedUp, p) * 100;
 
-    printf("_____________________________________________________________________\n_____________________________________________________________________\nMINIMUM TIME: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\n", min_elapsed_time_serial, min_elapsed_time_parallel, min_host2device_parallel, min_device2host_parallel, min_kernel, min_pVSs, min_speedUp);
+    printf("_____________________________________________________________________\n_____________________________________________________________________\nMINIMUM TIME: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\nEfficiency: %f %%\n", min_elapsed_time_serial, min_elapsed_time_parallel, min_host2device_parallel, min_device2host_parallel, min_kernel, min_pVSs, min_speedUp, min_efficiency);
 
     // print mean
     double mean_serial = findMean(serial_times, testRuns);
@@ -296,8 +372,9 @@ int main(int argc, char const *argv[])
     double mean_kernel = findMean(parallel_kernel, testRuns);
     double mean_pVSs = parallel_VS_serial(mean_serial, mean_parallel);
     double mean_speedUp = speedUp(mean_serial, mean_parallel);
+    double mean_efficiency = efficiency(mean_speedUp, p) * 100;
 
-    printf("_____________________________________________________________________\n_____________________________________________________________________\nMEAN TIME: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\n", mean_serial, mean_parallel, mean_host2device, mean_device2host, mean_kernel, mean_pVSs, mean_speedUp);
+    printf("_____________________________________________________________________\n_____________________________________________________________________\nMEAN TIME: \nSerial: %f ms ---------------------- Parallel: %f ms\nPARALLEL TIMES --> Data copy from host to device: %f ms\nPARALLEL TIMES --> Data copy from device to host: %f ms\nPARALLEL TIMES --> Kernel: %f ms\nParallel VS Serial: %f %%\nSpeed Up: %fx\nEfficiency: %f %%\n", mean_serial, mean_parallel, mean_host2device, mean_device2host, mean_kernel, mean_pVSs, mean_speedUp, mean_efficiency);
 
     cudaEventDestroy(host2device_start);
     cudaEventDestroy(host2device_end);
@@ -309,6 +386,5 @@ int main(int argc, char const *argv[])
     cudaFree(device_max);
     cudaFree(device_arr);
     free(arr_1);
-    free(arr_32);
     return 0;
 }

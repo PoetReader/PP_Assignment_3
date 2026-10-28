@@ -1,0 +1,112 @@
+# Assignment 3 - Finding the greatest number with CUDA C
+
+Serial and parallel (CUDA) search for the greatest number in an array of pseudo-random 32-bit integers. The parallel version uses a three-level reduction tree: warp level (`__shfl_down_sync`), block level (shared memory and `__syncthreads()`), global level (`atomicMax`).
+
+## Files
+
+| File | Content |
+|---|---|
+| `main.cu` | Serial version, CUDA kernel, host code, timing and evaluation |
+| `Makefile` | Build and run targets |
+| `report.pdf` | Report |
+| `results_c6-0_LARGE.tex`| Result |
+| `results_c6-0_MIDDLE.tex`| Result |
+| `results_c6-0_SMALL.tex`| Result |
+| `results_c6-4_LARGE.tex`| Result |
+| `results_c6-4_MIDDLE.tex`| Result |
+| `results_c6-4_SMALL.tex`| Result |
+| `scr.py`| PYthon programm from assignment |
+
+
+
+
+## Requirements
+
+- NVIDIA GPU with compute capability 7.5 or 8.6 (the Makefile builds for both)
+- CUDA toolkit with `nvcc`
+- Host memory: 0.5, 1.0 or 1.5 GiB depending on array size (plus the same amount of GPU global memory)
+- Linux
+
+## Compile
+
+```bash
+make main
+```
+
+This runs:
+
+```bash
+nvcc -gencode arch=compute_75,code=sm_75 \
+     -gencode arch=compute_86,code=sm_86 \
+     -o main main.cu
+```
+
+## Run
+
+The program takes one argument, the array size:
+
+| Argument | Elements | Memory (32-bit int) |
+|---|---|---|
+| `SMALL` | 134217728 (2^27) | 0.5 GiB |
+| `MIDDLE` | 268435456 (2^28) | 1.0 GiB |
+| `LARGE` | 402653184 (2^27 + 2^28) | 1.5 GiB |
+
+```bash
+./main SMALL
+./main MIDDLE
+./main LARGE
+```
+
+or via Make:
+
+```bash
+make run SIZE=LARGE
+```
+
+
+
+Calling `./main` without argument prints the usage to stderr.
+
+## Running on the IFI cluster
+
+1. Log in to the frontend: `ssh <UiT ID>@ificluster.ifi.uit.no`
+2. List nodes with a CUDA GPU: `/share/ifi/list-cuda-hosts.sh`
+3. Run the program on a chosen node. Nodes used in the report: `c6-0` (RTX 2060, CC 7.5) and `c6-4` (RTX 3090, CC 8.6).
+4. Compute capability of the current node: `python3 scr.py` (script from the assignment)
+
+## Output
+
+Standard output is redirected with `freopen` to a file named after the node and the array size:
+
+```
+results_<hostname>_<SIZE>.txt
+```
+
+Example: `results_c6-4_LARGE.txt`. Nothing is printed to the terminal except errors (stderr).
+
+The file contains:
+
+- array size and number of SMs of the GPU 
+- serial maximum and parallel maximum
+- per run (30 runs): serial time, parallel total time, host-to-device copy, kernel, device-to-host copy, parallel/serial in percent, speedup, efficiency
+- minimum over the 30 runs
+- mean over the 30 runs
+
+## Implementation summary
+
+- Data: `srand(52)` and `rand()`, array generated once on the host with `malloc`.
+- Launch configuration: fixed at `<<<1024, 256>>>` (1024 blocks, 8 warps per block).
+- Work distribution: grid-stride loop, `INT_MIN` as neutral element.
+- Level 1: `warpFindMax` with offsets 16, 8, 4, 2, 1.
+- Level 2: `__shared__ int warpMax[32]`, one `__syncthreads()`, second `warpFindMax` in warp 0.
+- Level 3: thread 0 of each block calls `atomicMax` on `device_max`, which is set to `INT_MIN` before every run.
+
+## Measurements
+
+- Repetitions: 30 per experiment.
+- Serial: wall-clock time with `clock_gettime(CLOCK_MONOTONIC)`.
+- Parallel: CUDA events (`cudaEventRecord`, `cudaEventElapsedTime`) around the host-to-device copy, the kernel and the device-to-host copy. The total parallel time is the sum of the three. The copy of the initial value `INT_MIN` to `device_max` is included in the host-to-device time. Allocation and freeing of memory are not measured.
+- Parallel / serial in percent: `parallel_time / serial_time * 100`.
+- Speedup: `serial_time / parallel_time`.
+- Efficiency in percent: `speedup / number of SMs * 100`.
+- Minimum and mean values are computed over the 30 runs.
